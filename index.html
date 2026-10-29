@@ -571,7 +571,7 @@ const ST = [
 Object.assign(BOOKS, {SNG:"Hohelied", LAM:"Klagelieder", "1TI":"1. Timotheus", "2TH":"2. Thessalonicher", "2PE":"2. Petrus"});
 Object.keys(BOOKS).forEach(k => CODE[BOOKS[k]] = k);
 const TCATS = [
- {k:"sex", n:"Sexualität & Beziehung", c:"#FFB0C8"},
+ {k:"sex", n:"Sexualität & Beziehung", c:"#FFB0C8", hidden:true},
  {k:"seele", n:"Gefühle & Seele", c:"#8EC1FF"},
  {k:"glaube", n:"Glaube & Zweifel", c:"#C7A6F5"},
  {k:"schuld", n:"Schuld & Vergebung", c:"#F0CB72"},
@@ -587,7 +587,7 @@ const HELP = {
  sucht: {t:"Raus aus der Abhängigkeit", p:"Sucht schafft man selten allein. Eine Suchtberatungsstelle in deiner Nähe (zum Beispiel bei Caritas oder Diakonie) hilft kostenlos und vertraulich.", n:[["TelefonSeelsorge","0800 111 0 111"]], f:"Kostenlos, anonym und rund um die Uhr."}
 };
 const TOPICS = [
-{k:"selbstbefriedigung", n:"Selbstbefriedigung", c:"sex", w:"selbstbefriedigung|masturbation|masturbieren|onanie|onanieren|selbst befriedigen|wichsen|sb|solo sex|lust|begierde",
+{k:"selbstbefriedigung", n:"Selbstbefriedigung", c:"sex", w:"selbstbefriedigung|masturbation|masturbieren|onanie|onanieren|selbst befriedigen|wichsen|solo sex",
  note:"Die Bibel erwähnt Selbstbefriedigung nicht ausdrücklich. Christen bewerten sie deshalb unterschiedlich. Klar spricht die Bibel aber über das, was meist dahintersteht: lüsterne Gedanken und Fantasien, Selbstbeherrschung, Scham und Gottes Gnade. Die Geschichte von Onan (1. Mose 38,8–10) wird oft genannt, handelt aber davon, dass er seiner Pflicht gegenüber der Witwe seines Bruders auswich.",
  v:[["Matthäus 5,27–28","Begehren fängt im Herzen an, nicht erst bei der Tat"],["1. Korinther 6,18–20","Dein Körper ist ein Tempel des Heiligen Geistes"],["1. Thessalonicher 4,3–5","Den eigenen Körper heilig halten, nicht von Leidenschaft treiben lassen"],["2. Timotheus 2,22","Vor den Begierden der Jugend fliehen und Gemeinschaft suchen"],["Hiob 31,1","Ein Bund mit den eigenen Augen"],["1. Korinther 10,13","Gott lässt keine Versuchung zu, ohne einen Ausweg zu geben"],["Galater 5,22–23","Selbstbeherrschung ist Frucht des Geistes, nicht nur Willenskraft"],["Römer 8,1","Keine Verurteilung für die, die zu Jesus gehören"],["1. Mose 38,8–10","Die Geschichte von Onan im Zusammenhang"]],
  s:["Josef bei Potifar","Die Versuchung in der Wüste","David und Batseba"], l:["Gnade","Der Heilige Geist"]},
@@ -595,15 +595,15 @@ const TOPICS = [
  note:"Pornos kommen in der Bibel natürlich nicht vor. Sie spricht aber deutlich darüber, worauf wir unsere Augen und Gedanken richten, und dass Begehren schon im Herzen beginnt. Und sie zeigt: Wer immer wieder fällt, darf immer wieder zu Gott kommen.",
  v:[["Matthäus 5,27–30","Was die Augen sehen, prägt das Herz"],["Hiob 31,1","Ein Bund mit den eigenen Augen"],["Psalm 101,3","Nichts Schändliches vor die Augen stellen"],["Philipper 4,8","Worauf du deine Gedanken richtest"],["Römer 12,2","Das Denken erneuern lassen, statt sich anzupassen"],["Jakobus 1,14–15","Wie aus Begierde Schritt für Schritt Sünde wird"],["1. Korinther 10,13","Gott zeigt einen Ausweg"],["1. Johannes 1,9","Gott vergibt, wenn wir ehrlich bekennen"]],
  s:["David und Batseba","Josef bei Potifar","Simson"], l:["Was ist Sünde?","Gnade"]},
-{k:"versuchung", n:"Versuchung & Rückfall", c:"sex", w:"versuchung|versucht|verführung|schwach werden|rückfall|immer wieder|sünde besiegen|kampf gegen sünde",
+{k:"versuchung", n:"Versuchung & Rückfall", c:"schuld", w:"versuchung|versucht|verführung|schwach werden|rückfall|immer wieder|sünde besiegen|kampf gegen sünde",
  note:"Versucht zu werden ist keine Sünde. Auch Jesus wurde versucht. Die Bibel zeigt, wie man widersteht und was man tut, wenn man doch gefallen ist.",
  v:[["1. Korinther 10,13","Gott gibt einen Ausweg"],["Jakobus 1,12–15","Wie Versuchung funktioniert"],["Hebräer 4,15–16","Jesus kennt Versuchung und hilft"],["Matthäus 26,41","Wachen und beten"],["Psalm 119,11","Gottes Wort im Herzen bewahrt"],["Epheser 6,10–11","Die Waffenrüstung Gottes"],["Sprüche 24,16","Der Gerechte fällt und steht wieder auf"]],
  s:["Die Versuchung in der Wüste","Der Sündenfall","Josef bei Potifar","Kain und Abel","Petrus wird wiederhergestellt"], l:["Was ist Sünde?","Der Heilige Geist"]},
-{k:"sex", n:"Sex vor der Ehe", c:"sex", w:"sex|sex vor der ehe|geschlechtsverkehr|miteinander schlafen|unzucht|hurerei|jungfrau|jungfräulichkeit|keuschheit|erstes mal|reinheit|enthaltsamkeit",
+{k:"sex", n:"Sex vor der Ehe", c:"sex", w:"sex|sexualität|sexuell|sex vor der ehe|geschlechtsverkehr|miteinander schlafen|unzucht|hurerei|jungfrau|jungfräulichkeit|keuschheit|erstes mal|reinheit|enthaltsamkeit",
  note:"Gott hat Sexualität geschaffen und gut gemacht. Ihren Platz sieht die Bibel in der lebenslangen Ehe zwischen Mann und Frau. Wer schon anders gelebt hat, ist nicht abgeschrieben: Bei Gott gibt es Vergebung und Neuanfang.",
  v:[["1. Mose 2,24","Mann und Frau werden ein Fleisch"],["Hebräer 13,4","Die Ehe in Ehren halten"],["1. Korinther 6,18–20","Flieht die Unzucht, euer Körper gehört Gott"],["1. Korinther 7,2–5","Sexualität in der Ehe"],["1. Thessalonicher 4,3–5","Heilig leben"],["Hohelied 2,7","Die Liebe nicht vorzeitig wecken"],["Sprüche 5,18–19","Freude an der eigenen Frau"]],
  s:["Adam und Eva im Garten","Josef bei Potifar","David und Batseba","Die Ehebrecherin"], l:["Was ist Sünde?","Gnade"]},
-{k:"liebe", n:"Verliebt, Beziehung, Liebeskummer", c:"sex", w:"verliebt|freundin|freund|beziehung|partner|partnerin|dating|liebeskummer|schluss machen|trennung|liebe|crush|zusammenkommen",
+{k:"liebe", n:"Verliebt, Beziehung, Liebeskummer", c:"sex", w:"verliebt|freundin|fester freund|beziehung|partner|partnerin|dating|liebeskummer|schluss machen|crush|zusammenkommen",
  note:"Die Bibel gibt keine Dating-Regeln, aber klare Grundsätze: Behüte dein Herz, such jemanden, der auch Jesus folgt, und lerne, was echte Liebe ist. Bei Liebeskummer ist Gott den Zerbrochenen nahe.",
  v:[["1. Korinther 13,4–7","Was echte Liebe ausmacht"],["2. Korinther 6,14","Nicht ungleich gespannt sein"],["Sprüche 4,23","Behüte dein Herz"],["Hohelied 8,6–7","Liebe ist stark wie der Tod"],["Psalm 34,19","Gott ist nahe, wenn das Herz zerbrochen ist"],["Prediger 3,1","Alles hat seine Zeit"]],
  s:["Rebekka am Brunnen","Jakob, Lea und Rahel","Rut und Noomi"], l:[]},
@@ -896,7 +896,7 @@ function pStart(){
   return `<div class="eyebrow">${new Date().toLocaleDateString("de-DE",{weekday:"long", day:"numeric", month:"long"})}</div>
   <h1>${hi}.</h1><p class="lead">Lernen, lesen, forschen und Einleitungen vorbereiten, an einem Ort.</p>
   <form class="qs" id="qs" role="search"><label class="sr" for="qsi">Was beschäftigt dich?</label><input class="input big" id="qsi" type="search" placeholder="Was beschäftigt dich? z. B. Angst, Zweifel, Geld" autocomplete="off" enterkeyhint="search"><button class="btn primary" type="submit">Suchen</button></form>
-  <div class="tchips" style="margin:-4px 0 14px">${["angst","selbstwert","versuchung","zweifel","geld","tod"].map(k => TP(k)).filter(Boolean).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}<a class="chip" href="#suche">Alle Themen ›</a></div>
+  <div class="tchips" style="margin:-4px 0 14px">${["angst","selbstwert","gebet","zweifel","geld","tod"].map(k => TP(k)).filter(Boolean).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}<a class="chip" href="#suche">Alle Themen ›</a></div>
   <div class="hero"><span class="lbl">Merksatz des Tages · ${esc(B(lessonOfDay.b).n)}</span><p class="quote">${esc(lessonOfDay.m)}</p><a class="src" href="#lektion-${lessonOfDay.id}">Lektion „${esc(lessonOfDay.t)}“ ›</a></div>
   <div class="kpis">${kpi("Lektionen", n, "/ " + L.length, Math.round(100*n/L.length), "", "lernen")}${kpi("Geschichten", rd, "/ " + ST.length, Math.round(100*rd/ST.length), "", "geschichten")}${kpi("Serie", st, st === 1 ? "Tag" : "Tage", null, "gold", "start")}${kpi("Einleitungen", dr, "", null, "", "einleitungen")}</div>
   <div class="grid" style="margin-top:10px">
@@ -1068,10 +1068,11 @@ function topicHits(q){
     kw.forEach(k => {
       if (k === q) sc = Math.max(sc, 100);
       else if (q.length >= 3 && k.startsWith(q)) sc = Math.max(sc, 85);
-      else if (k.length >= 4 && q.includes(k)) sc = Math.max(sc, 75);
+      else if (k.length >= 4 && (" " + q + " ").includes(" " + k + " ")) sc = Math.max(sc, 75);
       else if (q.length >= 4 && k.includes(q)) sc = Math.max(sc, 60);
       else { const tol = q.length >= 8 ? 2 : q.length >= 5 ? 1 : 0; if (tol) { if (lev(q, k) <= tol) sc = Math.max(sc, 70); else qw.forEach(w => { if (w.length >= 5) k.split(" ").forEach(kk => { if (kk.length >= 5 && lev(w, kk) <= (w.length >= 8 ? 2 : 1)) sc = Math.max(sc, 55); }); }); } }
     });
+    if (t.cat && t.cat.hidden && !(sc === 100 || sc === 75 || sc === 70 || (sc === 85 && q.length >= 7))) sc = 0;
     return {t, sc};
   }).filter(x => x.sc > 0).sort((a,b) => b.sc - a.sc).map(x => x.t);
 }
@@ -1100,26 +1101,28 @@ function drawSearch(){
   const el = document.getElementById("sres"); if (!el) return;
   const raw = SQ.trim(), q = norm(raw);
   if (q.length < 2) {
-    el.innerHTML = `<h2>Themen von A bis Z <small>${TOPICS.length}</small></h2>` + TCATS.map(c => { const ts = TOPICS.filter(t => t.c === c.k).sort((a,b) => a.n.localeCompare(b.n, "de")); return ts.length ? `<div class="tcat"><div class="eyebrow" style="--c:${c.c}"><span class="dot"></span>${esc(c.n)}</div><div class="tchips">${ts.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div></div>` : ""; }).join("");
+    el.innerHTML = `<h2>Themen von A bis Z <small>${TOPICS.filter(t => !t.cat.hidden).length}</small></h2>` + TCATS.filter(c => !c.hidden).map(c => { const ts = TOPICS.filter(t => t.c === c.k).sort((a,b) => a.n.localeCompare(b.n, "de")); return ts.length ? `<div class="tcat"><div class="eyebrow" style="--c:${c.c}"><span class="dot"></span>${esc(c.n)}</div><div class="tchips">${ts.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div></div>` : ""; }).join("");
     return;
   }
   const th = topicHits(raw);
-  const ls = L.filter(x => norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a).includes(q));
-  const ss = ST.filter(x => norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q).includes(q));
+  const wq = " " + q;
+  const ls = L.filter(x => (" " + norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a)).includes(wq));
+  const ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq));
   const thS = new Set(th.flatMap(t => t.sid));
   const ss2 = ss.filter(x => !thS.has(x.id));
   let h = "";
   if (th.length) {
     const t = th[0];
     h += `<div class="stack" style="--c:${t.cat.c}"><div class="eyebrow"><span class="dot"></span>Thema · ${esc(t.cat.n)}</div><h2 style="margin:0">${esc(t.n)}</h2>${topicBody(t, false)}<a class="btn primary" href="#frage-${t.k}">Alles zum Thema ${esc(t.n)} ›</a></div>`;
-    if (th.length > 1) h += `<h2>Weitere Themen</h2><div class="tchips">${th.slice(1,8).map(t => `<a class="chip" href="#frage-${t.k}"><span class="dot" style="--c:${t.cat.c}"></span>${esc(t.n)}</a>`).join("")}</div>`;
+    const more = th.slice(1).filter(x => !x.cat.hidden || th[0].cat.hidden).slice(0,7);
+    if (more.length) h += `<h2>Weitere Themen</h2><div class="tchips">${more.map(t => `<a class="chip" href="#frage-${t.k}"><span class="dot" style="--c:${t.cat.c}"></span>${esc(t.n)}</a>`).join("")}</div>`;
   }
   if (/\d/.test(q)) { const vs = []; TOPICS.forEach(t => t.v.forEach(([r,d]) => { if (norm(r).startsWith(q) || norm(r).includes(" " + q) || norm(r) === q) vs.push([r,d,t]); }));
     const seen = new Set(), vu = vs.filter(([r]) => !seen.has(r) && seen.add(r));
     if (vu.length) h += `<h2>Bibelstellen <small>${vu.length}</small></h2><div class="stack" style="gap:6px">${vu.slice(0,12).map(([r,d,t]) => `<a class="readlink vl" href="${refUrl(r)}" target="_blank" rel="noopener"><span class="t">${esc(r)}<small>${esc(d)} · Thema: ${esc(t.n)}</small></span>${I.ext}</a>`).join("")}</div>`; }
   if (ss2.length) h += `<h2>Geschichten <small>${ss2.length}</small></h2><div class="list">${ss2.map(storyItem).join("")}</div>`;
   if (ls.length) h += `<h2>Lektionen <small>${ls.length}</small></h2><div class="list">${ls.map(x => `<a class="item" href="#lektion-${x.id}" style="--c:${B(x.b).c}"><span class="dot"></span><span class="tx"><span class="tt">${esc(x.t)}</span><span class="rf">${esc(B(x.b).n)}</span></span><span class="chev">›</span></a>`).join("")}</div>`;
-  if (!h) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
+  if (!h) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.filter(t => !t.cat.hidden).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
   el.innerHTML = h;
 }
 

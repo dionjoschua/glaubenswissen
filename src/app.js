@@ -97,7 +97,7 @@ function pStart(){
   return `<div class="eyebrow">${new Date().toLocaleDateString("de-DE",{weekday:"long", day:"numeric", month:"long"})}</div>
   <h1>${hi}.</h1><p class="lead">Lernen, lesen, forschen und Einleitungen vorbereiten, an einem Ort.</p>
   <form class="qs" id="qs" role="search"><label class="sr" for="qsi">Was beschäftigt dich?</label><input class="input big" id="qsi" type="search" placeholder="Was beschäftigt dich? z. B. Angst, Zweifel, Geld" autocomplete="off" enterkeyhint="search"><button class="btn primary" type="submit">Suchen</button></form>
-  <div class="tchips" style="margin:-4px 0 14px">${["angst","selbstwert","versuchung","zweifel","geld","tod"].map(k => TP(k)).filter(Boolean).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}<a class="chip" href="#suche">Alle Themen ›</a></div>
+  <div class="tchips" style="margin:-4px 0 14px">${["angst","selbstwert","gebet","zweifel","geld","tod"].map(k => TP(k)).filter(Boolean).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}<a class="chip" href="#suche">Alle Themen ›</a></div>
   <div class="hero"><span class="lbl">Merksatz des Tages · ${esc(B(lessonOfDay.b).n)}</span><p class="quote">${esc(lessonOfDay.m)}</p><a class="src" href="#lektion-${lessonOfDay.id}">Lektion „${esc(lessonOfDay.t)}“ ›</a></div>
   <div class="kpis">${kpi("Lektionen", n, "/ " + L.length, Math.round(100*n/L.length), "", "lernen")}${kpi("Geschichten", rd, "/ " + ST.length, Math.round(100*rd/ST.length), "", "geschichten")}${kpi("Serie", st, st === 1 ? "Tag" : "Tage", null, "gold", "start")}${kpi("Einleitungen", dr, "", null, "", "einleitungen")}</div>
   <div class="grid" style="margin-top:10px">
@@ -269,10 +269,11 @@ function topicHits(q){
     kw.forEach(k => {
       if (k === q) sc = Math.max(sc, 100);
       else if (q.length >= 3 && k.startsWith(q)) sc = Math.max(sc, 85);
-      else if (k.length >= 4 && q.includes(k)) sc = Math.max(sc, 75);
+      else if (k.length >= 4 && (" " + q + " ").includes(" " + k + " ")) sc = Math.max(sc, 75);
       else if (q.length >= 4 && k.includes(q)) sc = Math.max(sc, 60);
       else { const tol = q.length >= 8 ? 2 : q.length >= 5 ? 1 : 0; if (tol) { if (lev(q, k) <= tol) sc = Math.max(sc, 70); else qw.forEach(w => { if (w.length >= 5) k.split(" ").forEach(kk => { if (kk.length >= 5 && lev(w, kk) <= (w.length >= 8 ? 2 : 1)) sc = Math.max(sc, 55); }); }); } }
     });
+    if (t.cat && t.cat.hidden && !(sc === 100 || sc === 75 || sc === 70 || (sc === 85 && q.length >= 7))) sc = 0;
     return {t, sc};
   }).filter(x => x.sc > 0).sort((a,b) => b.sc - a.sc).map(x => x.t);
 }
@@ -301,26 +302,28 @@ function drawSearch(){
   const el = document.getElementById("sres"); if (!el) return;
   const raw = SQ.trim(), q = norm(raw);
   if (q.length < 2) {
-    el.innerHTML = `<h2>Themen von A bis Z <small>${TOPICS.length}</small></h2>` + TCATS.map(c => { const ts = TOPICS.filter(t => t.c === c.k).sort((a,b) => a.n.localeCompare(b.n, "de")); return ts.length ? `<div class="tcat"><div class="eyebrow" style="--c:${c.c}"><span class="dot"></span>${esc(c.n)}</div><div class="tchips">${ts.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div></div>` : ""; }).join("");
+    el.innerHTML = `<h2>Themen von A bis Z <small>${TOPICS.filter(t => !t.cat.hidden).length}</small></h2>` + TCATS.filter(c => !c.hidden).map(c => { const ts = TOPICS.filter(t => t.c === c.k).sort((a,b) => a.n.localeCompare(b.n, "de")); return ts.length ? `<div class="tcat"><div class="eyebrow" style="--c:${c.c}"><span class="dot"></span>${esc(c.n)}</div><div class="tchips">${ts.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div></div>` : ""; }).join("");
     return;
   }
   const th = topicHits(raw);
-  const ls = L.filter(x => norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a).includes(q));
-  const ss = ST.filter(x => norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q).includes(q));
+  const wq = " " + q;
+  const ls = L.filter(x => (" " + norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a)).includes(wq));
+  const ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq));
   const thS = new Set(th.flatMap(t => t.sid));
   const ss2 = ss.filter(x => !thS.has(x.id));
   let h = "";
   if (th.length) {
     const t = th[0];
     h += `<div class="stack" style="--c:${t.cat.c}"><div class="eyebrow"><span class="dot"></span>Thema · ${esc(t.cat.n)}</div><h2 style="margin:0">${esc(t.n)}</h2>${topicBody(t, false)}<a class="btn primary" href="#frage-${t.k}">Alles zum Thema ${esc(t.n)} ›</a></div>`;
-    if (th.length > 1) h += `<h2>Weitere Themen</h2><div class="tchips">${th.slice(1,8).map(t => `<a class="chip" href="#frage-${t.k}"><span class="dot" style="--c:${t.cat.c}"></span>${esc(t.n)}</a>`).join("")}</div>`;
+    const more = th.slice(1).filter(x => !x.cat.hidden || th[0].cat.hidden).slice(0,7);
+    if (more.length) h += `<h2>Weitere Themen</h2><div class="tchips">${more.map(t => `<a class="chip" href="#frage-${t.k}"><span class="dot" style="--c:${t.cat.c}"></span>${esc(t.n)}</a>`).join("")}</div>`;
   }
   if (/\d/.test(q)) { const vs = []; TOPICS.forEach(t => t.v.forEach(([r,d]) => { if (norm(r).startsWith(q) || norm(r).includes(" " + q) || norm(r) === q) vs.push([r,d,t]); }));
     const seen = new Set(), vu = vs.filter(([r]) => !seen.has(r) && seen.add(r));
     if (vu.length) h += `<h2>Bibelstellen <small>${vu.length}</small></h2><div class="stack" style="gap:6px">${vu.slice(0,12).map(([r,d,t]) => `<a class="readlink vl" href="${refUrl(r)}" target="_blank" rel="noopener"><span class="t">${esc(r)}<small>${esc(d)} · Thema: ${esc(t.n)}</small></span>${I.ext}</a>`).join("")}</div>`; }
   if (ss2.length) h += `<h2>Geschichten <small>${ss2.length}</small></h2><div class="list">${ss2.map(storyItem).join("")}</div>`;
   if (ls.length) h += `<h2>Lektionen <small>${ls.length}</small></h2><div class="list">${ls.map(x => `<a class="item" href="#lektion-${x.id}" style="--c:${B(x.b).c}"><span class="dot"></span><span class="tx"><span class="tt">${esc(x.t)}</span><span class="rf">${esc(B(x.b).n)}</span></span><span class="chev">›</span></a>`).join("")}</div>`;
-  if (!h) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
+  if (!h) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.filter(t => !t.cat.hidden).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
   el.innerHTML = h;
 }
 

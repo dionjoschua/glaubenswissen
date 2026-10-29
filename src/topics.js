@@ -1,7 +1,7 @@
 Object.assign(BOOKS, {SNG:"Hohelied", LAM:"Klagelieder", "1TI":"1. Timotheus", "2TH":"2. Thessalonicher", "2PE":"2. Petrus"});
 Object.keys(BOOKS).forEach(k => CODE[BOOKS[k]] = k);
 const TCATS = [
- {k:"sex", n:"Sexualität & Beziehung", c:"#FFB0C8"},
+ {k:"sex", n:"Sexualität & Beziehung", c:"#FFB0C8", hidden:true},
  {k:"seele", n:"Gefühle & Seele", c:"#8EC1FF"},
  {k:"glaube", n:"Glaube & Zweifel", c:"#C7A6F5"},
  {k:"schuld", n:"Schuld & Vergebung", c:"#F0CB72"},
@@ -17,7 +17,7 @@ const HELP = {
  sucht: {t:"Raus aus der Abhängigkeit", p:"Sucht schafft man selten allein. Eine Suchtberatungsstelle in deiner Nähe (zum Beispiel bei Caritas oder Diakonie) hilft kostenlos und vertraulich.", n:[["TelefonSeelsorge","0800 111 0 111"]], f:"Kostenlos, anonym und rund um die Uhr."}
 };
 const TOPICS = [
-{k:"selbstbefriedigung", n:"Selbstbefriedigung", c:"sex", w:"selbstbefriedigung|masturbation|masturbieren|onanie|onanieren|selbst befriedigen|wichsen|sb|solo sex|lust|begierde",
+{k:"selbstbefriedigung", n:"Selbstbefriedigung", c:"sex", w:"selbstbefriedigung|masturbation|masturbieren|onanie|onanieren|selbst befriedigen|wichsen|solo sex",
  note:"Die Bibel erwähnt Selbstbefriedigung nicht ausdrücklich. Christen bewerten sie deshalb unterschiedlich. Klar spricht die Bibel aber über das, was meist dahintersteht: lüsterne Gedanken und Fantasien, Selbstbeherrschung, Scham und Gottes Gnade. Die Geschichte von Onan (1. Mose 38,8–10) wird oft genannt, handelt aber davon, dass er seiner Pflicht gegenüber der Witwe seines Bruders auswich.",
  v:[["Matthäus 5,27–28","Begehren fängt im Herzen an, nicht erst bei der Tat"],["1. Korinther 6,18–20","Dein Körper ist ein Tempel des Heiligen Geistes"],["1. Thessalonicher 4,3–5","Den eigenen Körper heilig halten, nicht von Leidenschaft treiben lassen"],["2. Timotheus 2,22","Vor den Begierden der Jugend fliehen und Gemeinschaft suchen"],["Hiob 31,1","Ein Bund mit den eigenen Augen"],["1. Korinther 10,13","Gott lässt keine Versuchung zu, ohne einen Ausweg zu geben"],["Galater 5,22–23","Selbstbeherrschung ist Frucht des Geistes, nicht nur Willenskraft"],["Römer 8,1","Keine Verurteilung für die, die zu Jesus gehören"],["1. Mose 38,8–10","Die Geschichte von Onan im Zusammenhang"]],
  s:["Josef bei Potifar","Die Versuchung in der Wüste","David und Batseba"], l:["Gnade","Der Heilige Geist"]},
@@ -25,15 +25,15 @@ const TOPICS = [
  note:"Pornos kommen in der Bibel natürlich nicht vor. Sie spricht aber deutlich darüber, worauf wir unsere Augen und Gedanken richten, und dass Begehren schon im Herzen beginnt. Und sie zeigt: Wer immer wieder fällt, darf immer wieder zu Gott kommen.",
  v:[["Matthäus 5,27–30","Was die Augen sehen, prägt das Herz"],["Hiob 31,1","Ein Bund mit den eigenen Augen"],["Psalm 101,3","Nichts Schändliches vor die Augen stellen"],["Philipper 4,8","Worauf du deine Gedanken richtest"],["Römer 12,2","Das Denken erneuern lassen, statt sich anzupassen"],["Jakobus 1,14–15","Wie aus Begierde Schritt für Schritt Sünde wird"],["1. Korinther 10,13","Gott zeigt einen Ausweg"],["1. Johannes 1,9","Gott vergibt, wenn wir ehrlich bekennen"]],
  s:["David und Batseba","Josef bei Potifar","Simson"], l:["Was ist Sünde?","Gnade"]},
-{k:"versuchung", n:"Versuchung & Rückfall", c:"sex", w:"versuchung|versucht|verführung|schwach werden|rückfall|immer wieder|sünde besiegen|kampf gegen sünde",
+{k:"versuchung", n:"Versuchung & Rückfall", c:"schuld", w:"versuchung|versucht|verführung|schwach werden|rückfall|immer wieder|sünde besiegen|kampf gegen sünde",
  note:"Versucht zu werden ist keine Sünde. Auch Jesus wurde versucht. Die Bibel zeigt, wie man widersteht und was man tut, wenn man doch gefallen ist.",
  v:[["1. Korinther 10,13","Gott gibt einen Ausweg"],["Jakobus 1,12–15","Wie Versuchung funktioniert"],["Hebräer 4,15–16","Jesus kennt Versuchung und hilft"],["Matthäus 26,41","Wachen und beten"],["Psalm 119,11","Gottes Wort im Herzen bewahrt"],["Epheser 6,10–11","Die Waffenrüstung Gottes"],["Sprüche 24,16","Der Gerechte fällt und steht wieder auf"]],
  s:["Die Versuchung in der Wüste","Der Sündenfall","Josef bei Potifar","Kain und Abel","Petrus wird wiederhergestellt"], l:["Was ist Sünde?","Der Heilige Geist"]},
-{k:"sex", n:"Sex vor der Ehe", c:"sex", w:"sex|sex vor der ehe|geschlechtsverkehr|miteinander schlafen|unzucht|hurerei|jungfrau|jungfräulichkeit|keuschheit|erstes mal|reinheit|enthaltsamkeit",
+{k:"sex", n:"Sex vor der Ehe", c:"sex", w:"sex|sexualität|sexuell|sex vor der ehe|geschlechtsverkehr|miteinander schlafen|unzucht|hurerei|jungfrau|jungfräulichkeit|keuschheit|erstes mal|reinheit|enthaltsamkeit",
  note:"Gott hat Sexualität geschaffen und gut gemacht. Ihren Platz sieht die Bibel in der lebenslangen Ehe zwischen Mann und Frau. Wer schon anders gelebt hat, ist nicht abgeschrieben: Bei Gott gibt es Vergebung und Neuanfang.",
  v:[["1. Mose 2,24","Mann und Frau werden ein Fleisch"],["Hebräer 13,4","Die Ehe in Ehren halten"],["1. Korinther 6,18–20","Flieht die Unzucht, euer Körper gehört Gott"],["1. Korinther 7,2–5","Sexualität in der Ehe"],["1. Thessalonicher 4,3–5","Heilig leben"],["Hohelied 2,7","Die Liebe nicht vorzeitig wecken"],["Sprüche 5,18–19","Freude an der eigenen Frau"]],
  s:["Adam und Eva im Garten","Josef bei Potifar","David und Batseba","Die Ehebrecherin"], l:["Was ist Sünde?","Gnade"]},
-{k:"liebe", n:"Verliebt, Beziehung, Liebeskummer", c:"sex", w:"verliebt|freundin|freund|beziehung|partner|partnerin|dating|liebeskummer|schluss machen|trennung|liebe|crush|zusammenkommen",
+{k:"liebe", n:"Verliebt, Beziehung, Liebeskummer", c:"sex", w:"verliebt|freundin|fester freund|beziehung|partner|partnerin|dating|liebeskummer|schluss machen|crush|zusammenkommen",
  note:"Die Bibel gibt keine Dating-Regeln, aber klare Grundsätze: Behüte dein Herz, such jemanden, der auch Jesus folgt, und lerne, was echte Liebe ist. Bei Liebeskummer ist Gott den Zerbrochenen nahe.",
  v:[["1. Korinther 13,4–7","Was echte Liebe ausmacht"],["2. Korinther 6,14","Nicht ungleich gespannt sein"],["Sprüche 4,23","Behüte dein Herz"],["Hohelied 8,6–7","Liebe ist stark wie der Tod"],["Psalm 34,19","Gott ist nahe, wenn das Herz zerbrochen ist"],["Prediger 3,1","Alles hat seine Zeit"]],
  s:["Rebekka am Brunnen","Jakob, Lea und Rahel","Rut und Noomi"], l:[]},
