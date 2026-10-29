@@ -1096,7 +1096,7 @@ function pFrage(k){
 }
 function pSuche(){
   return `<h1>Was beschäftigt dich?</h1><p class="lead">Gib ein Thema, eine Frage, eine Person oder eine Bibelstelle ein. Du bekommst sofort, was die Bibel dazu sagt.</p>
-  <label class="sr" for="sq">Suchbegriff</label><input class="input big" id="sq" type="search" placeholder="z. B. Angst, Pornos, Geld, Petrus, Römer 8" value="${esc(SQ)}" autocomplete="off" enterkeyhint="search"><div id="sres" style="margin-top:14px"></div>`;
+  <label class="sr" for="sq">Suchbegriff</label><input class="input big" id="sq" type="search" placeholder="z. B. Angst, Zweifel, Geld, Petrus, Römer 8" value="${esc(SQ)}" autocomplete="off" enterkeyhint="search"><div id="sres" style="margin-top:14px"></div>`;
 }
 function drawSearch(){
   const el = document.getElementById("sres"); if (!el) return;
