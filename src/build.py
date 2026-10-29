@@ -16,7 +16,7 @@ css = open(D+'style.css', encoding='utf-8').read()
 body = open(D+'body.html', encoding='utf-8').read()
 js = open(D+'data.js', encoding='utf-8').read() + "\n" + open(D+'topics.js', encoding='utf-8').read() + "\n" + open(D+'app.js', encoding='utf-8').read()
 desc = "Glaubenswissen: Lektionen über Jesus, die Bibel und das Evangelium, 137 Bibelgeschichten zum Lesen und Forschen und ein Baukasten für Predigt-Einleitungen."
-sw_reg = "\nif ('serviceWorker' in navigator && location.protocol === 'https:') { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {})); }\n"
+sw_reg = "\nif ('serviceWorker' in navigator && location.protocol === 'https:') { let reloaded = false; navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloaded) return; reloaded = true; location.reload(); }); window.addEventListener('load', () => navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).then(r => r.update()).catch(() => {})); }\n"
 
 site = f'''<!DOCTYPE html>
 <html lang="de">
@@ -25,7 +25,7 @@ site = f'''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Glaubenswissen</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#10151F">
+<meta name="theme-color" content="#10151F">\n<meta http-equiv="Cache-Control" content="no-cache">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Glaubenswissen">
 <meta property="og:description" content="{desc}">
@@ -61,14 +61,14 @@ manifest = {"name":"Glaubenswissen","short_name":"Glaubenswissen","description":
  "icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
 json.dump(manifest, open(OUT+'manifest.webmanifest','w',encoding='utf-8'), ensure_ascii=False, indent=1)
 
-sw = '''const CACHE = "glaubenswissen-v3";
+sw = '''const CACHE = "glaubenswissen-v5";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
-self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
+self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.map(f => new Request(f, {cache:"reload"})))).catch(() => {})); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {
   const u = new URL(e.request.url);
   if (e.request.method !== "GET" || u.origin !== location.origin) return;
-  e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(CACHE).then(ca => ca.put(e.request, c)); return r; }).catch(() => caches.match(e.request).then(r => r || caches.match("./index.html"))));
+  e.respondWith(fetch(e.request, {cache:"no-cache"}).then(r => { const c = r.clone(); caches.open(CACHE).then(ca => ca.put(e.request, c)); return r; }).catch(() => caches.match(e.request).then(r => r || caches.match("./index.html"))));
 });
 '''
 open(OUT+'sw.js','w',encoding='utf-8').write(sw)

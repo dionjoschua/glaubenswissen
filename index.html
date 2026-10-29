@@ -6,6 +6,7 @@
 <title>Glaubenswissen</title>
 <meta name="description" content="Glaubenswissen: Lektionen über Jesus, die Bibel und das Evangelium, 137 Bibelgeschichten zum Lesen und Forschen und ein Baukasten für Predigt-Einleitungen.">
 <meta name="theme-color" content="#10151F">
+<meta http-equiv="Cache-Control" content="no-cache">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Glaubenswissen">
 <meta property="og:description" content="Glaubenswissen: Lektionen über Jesus, die Bibel und das Evangelium, 137 Bibelgeschichten zum Lesen und Forschen und ein Baukasten für Predigt-Einleitungen.">
@@ -1260,7 +1261,7 @@ function releaseWake(){ try { if (wake) wake.release(); } catch(e) {} wake = nul
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && route().startsWith("vortrag-")) startWake(); });
 render(true);
 
-if ('serviceWorker' in navigator && location.protocol === 'https:') { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {})); }
+if ('serviceWorker' in navigator && location.protocol === 'https:') { let reloaded = false; navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloaded) return; reloaded = true; location.reload(); }); window.addEventListener('load', () => navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).then(r => r.update()).catch(() => {})); }
 </script>
 </body>
 </html>
