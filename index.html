@@ -804,7 +804,9 @@ const INTERVAL = {1:1, 2:3, 3:7, 4:14, 5:30};
 let S = { done:{}, day:"", today:{}, hist:{}, read:{}, notes:{}, drafts:{}, cards:{}, prefs:{} };
 try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && typeof s === "object") S = Object.assign(S, s); } catch(e) {}
 ["done","today","hist","read","notes","drafts","cards","prefs"].forEach(k => { if (!S[k] || typeof S[k] !== "object") S[k] = {}; });
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} askPersist(); };
+let persistAsked = false;
+function askPersist(){ if (persistAsked) return; persistAsked = true; try { if (navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch(e) {} }
 const ds = d => { const x = new Date(d); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0,10); };
 const TODAY = ds(new Date());
 const addDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return ds(d); };
@@ -1136,7 +1138,8 @@ function pEinstellungen(){
       <span style="font-weight:700">Farbschema</span><div class="seg">${segB("th","system",th,"Automatisch")}${segB("th","light",th,"Hell")}${segB("th","dark",th,"Dunkel")}</div>
       <span style="font-weight:700">Schriftgröße</span><div class="seg">${segB("fs",15,fs,"Klein")}${segB("fs",16,fs,"Normal")}${segB("fs",18,fs,"Groß")}${segB("fs",20,fs,"Sehr groß")}</div></div>
     <div class="card"><div class="card-h"><span>Sicherung</span></div>
-      <p>Deine Notizen, Einleitungen und dein Fortschritt liegen nur in diesem Browser. Sichere sie regelmäßig, vor allem bevor du das Gerät wechselst.</p>
+      <p>Dein Fortschritt, deine Notizen und Einleitungen gehören nur dir. Sie bleiben in diesem Browser auf diesem Gerät gespeichert, niemand sonst sieht sie, und du siehst nicht die der anderen.</p>
+      <p style="color:var(--quiet);font-size:.9rem">Tipp fürs iPhone: Hol dir die Seite über Teilen → „Zum Home-Bildschirm“. Sonst kann Safari die Daten löschen, wenn du die Seite mehrere Wochen nicht öffnest. Vor einem Gerätewechsel: Sicherung herunterladen.</p>
       <div class="row"><button class="btn primary" id="exp">Sicherung herunterladen</button><button class="btn" id="expC">${I.copy}Als Text kopieren</button></div>
       <label for="impF" style="font-weight:700">Sicherung wiederherstellen</label><input class="input" type="file" id="impF" accept=".json,application/json,text/plain">
       <textarea id="impT" placeholder="… oder kopierten Sicherungstext hier einfügen" style="min-height:80px"></textarea>
