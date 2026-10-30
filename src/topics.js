@@ -139,7 +139,7 @@ const TOPICS = [
  s:["Nikodemus in der Nacht","Zachäus","Saulus wird Paulus","Philippus und der Kämmerer","Der verlorene Sohn"], l:["Das Evangelium in 4 Worten","Umkehr und Glaube"]},
 {k:"taufe", n:"Taufe", c:"glaube", w:"taufe|taufen|getauft|taufen lassen",
  note:"Die Taufe ist das öffentliche Zeichen: Ich gehöre zu Jesus. Jesus selbst hat sich taufen lassen und seinen Jüngern aufgetragen zu taufen.",
- v:[["Matthäus 28,19","Tauft sie"],["Apostelgeschichte 2,38","Kehrt um und lasst euch taufen"],["Römer 6,3–4","Mit Christus begraben und auferweckt"],["Apostelgeschichte 8,36–38","Was hindert mich?"]],
+ v:[["Matthäus 28,19","Tauft sie"],["Apostelgeschichte 2,38","Kehrt um und lasst euch taufen"],["Römer 6,3–4","Mit Christus begraben und auferweckt"],["Apostelgeschichte 8,38–39","Der Kämmerer lässt sich taufen"]],
  s:["Die Taufe von Jesus","Philippus und der Kämmerer","Pfingsten"], l:["Gemeinde, Taufe, Abendmahl"]},
 {k:"andere-religionen", n:"Andere Religionen", c:"glaube", w:"andere religionen|islam|muslim|buddhismus|alle religionen gleich|einziger weg|ist jesus der einzige weg|atheist|atheismus",
  note:"Jesus sagt von sich: Ich bin der Weg, die Wahrheit und das Leben. Gleichzeitig zeigt Paulus in Athen, wie man respektvoll mit Menschen anderer Überzeugungen redet.",
