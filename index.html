@@ -569,7 +569,7 @@ const ST = [
 ].map((a,i) => ({id:"s"+i, g:a[0], t:a[1], u:a[2].split("|"), r:refText(a[2].split("|")), s:a[3], k:a[4], q:a[5]}));
 
 
-Object.assign(BOOKS, {SNG:"Hohelied", LAM:"Klagelieder", "1TI":"1. Timotheus", "2TH":"2. Thessalonicher", "2PE":"2. Petrus"});
+Object.assign(BOOKS, {ZEP:"Zefanja", SNG:"Hohelied", LAM:"Klagelieder", "1TI":"1. Timotheus", "2TH":"2. Thessalonicher", "2PE":"2. Petrus"});
 Object.keys(BOOKS).forEach(k => CODE[BOOKS[k]] = k);
 const TCATS = [
  {k:"sex", n:"Sexualität & Beziehung", c:"#FFB0C8", hidden:true},
@@ -692,7 +692,7 @@ const TOPICS = [
  note:"Zweifel gehören zum Glauben dazu. Jesus hat Zweifler nicht weggeschickt, sondern ist ihnen begegnet. „Ich glaube, hilf meinem Unglauben!“ ist ein Gebet, das Gott hört.",
  v:[["Markus 9,24","Ich glaube, hilf meinem Unglauben"],["Johannes 20,27–29","Jesus begegnet Thomas"],["Jakobus 1,5–6","Um Weisheit bitten"],["Psalm 73","Ein ehrlicher Zweifler findet zurück"],["Hebräer 11,1","Was Glaube ist"],["Römer 1,20","Gott ist in der Schöpfung zu erkennen"]],
  s:["Thomas zweifelt","Gott antwortet Hiob","Elia auf dem Karmel","Die Emmausjünger"], l:["Wer ist Jesus?","Auferstehung, Himmelfahrt, Wiederkunft"]},
-{k:"gebet", n:"Beten", c:"glaube", w:"beten|gebet|wie bete ich|gott hört nicht|gebetserhörung|unerhört|stille zeit",
+{k:"gebet", n:"Beten", c:"glaube", w:"beten|gebet|wie bete ich|gott hört nicht|gebetserhörung|unerhört|stille zeit|weiß nicht was ich beten soll|keine worte|beten fällt schwer",
  note:"Beten ist Reden mit Gott, ehrlich wie mit einem Vater. Jesus hat ein Muster gegeben, und er ermutigt, nicht aufzuhören.",
  v:[["Matthäus 6,5–13","Das Vaterunser"],["Philipper 4,6–7","Alles im Gebet vor Gott bringen"],["Lukas 18,1–8","Nicht aufhören zu beten"],["Jakobus 5,16","Das Gebet eines Gerechten bewirkt viel"],["Römer 8,26","Der Geist hilft beim Beten"],["1. Johannes 5,14–15","Gott hört uns"]],
  s:["Hanna betet um ein Kind","Gott ruft Samuel","Die kanaanäische Frau","Petrus wird befreit","Gethsemane"], l:["Gebet"]},
@@ -792,6 +792,42 @@ const TOPICS = [
  note:"Gott hat sein eigenes Timing. Viele in der Bibel mussten lange warten, und Gott war nie zu spät.",
  v:[["Psalm 27,14","Harre des Herrn"],["Jesaja 40,31","Die auf den Herrn harren"],["Galater 6,9","Nicht müde werden, Gutes zu tun"],["Prediger 3,1","Alles hat seine Zeit"],["Römer 8,25","Mit Geduld warten"]],
  s:["Simeon und Hanna","Josef deutet Pharaos Träume","Sara lacht","Die Sterne am Himmel"], l:[]},
+{k:"bibel-motivation", n:"Keine Lust zum Bibellesen", c:"glaube", w:"keine motivation|keine lust|bibel lesen|bibellesen|lesen|motivation|langweilig|verstehe die bibel nicht|keine zeit|stille zeit|dranbleiben|disziplin|wo anfangen|wie lese ich die bibel",
+ note:"Fast jeder Christ kennt Zeiten, in denen Bibellesen schwerfällt. Die Lust kommt oft erst beim Tun, nicht vorher. Fang klein an: ein Psalm oder ein kurzer Abschnitt aus Markus, jeden Tag zur gleichen Zeit. Bete vorher kurz: „Herr, zeig mir etwas.“ Gottes Wort wirkt, auch wenn du es gerade nicht spürst.",
+ v:[["Psalm 119,105","Dein Wort ist ein Licht auf meinem Weg"],["Psalm 1,2–3","Wer darin liest, ist wie ein Baum am Wasser"],["Jesaja 55,10–11","Gottes Wort kommt nicht leer zurück"],["Matthäus 4,4","Der Mensch lebt nicht vom Brot allein"],["Hebräer 4,12","Gottes Wort ist lebendig"],["2. Timotheus 3,16–17","Die ganze Schrift ist nützlich"]],
+ s:["Maria und Marta","Josia findet das Gesetzbuch","Die Emmausjünger"], l:["Die Bibel richtig lesen","Die 4 Evangelien – der Unterschied"]},
+{k:"gott-fern", n:"Gott fühlt sich weit weg an", c:"glaube", w:"gott ist weit weg|gott fern|ich spüre gott nicht|spüre gott nicht|gott schweigt|keine verbindung zu gott|gott weg|trocken|wüste|glaube fühlt sich leer an|gott antwortet nicht",
+ note:"Auch David, Elia und Hiob hatten Zeiten, in denen Gott fern schien. Die Psalmen sind voll davon: „Wie lange noch, Herr?“ Gefühle sagen nicht, ob Gott da ist. Er hat versprochen: Ich verlasse dich nicht. Sag ihm ehrlich, wie es dir geht. Das ist schon Gebet.",
+ v:[["Psalm 13","Wie lange noch, Herr?"],["Psalm 42,2–6","Meine Seele dürstet nach Gott"],["Jakobus 4,8","Naht euch zu Gott, so naht er sich zu euch"],["Hebräer 13,5","Ich will dich nicht verlassen"],["1. Könige 19,11–13","Gott im leisen Säuseln"],["Jesaja 41,10","Fürchte dich nicht, ich bin mit dir"]],
+ s:["Elia unter dem Ginster","Gott antwortet Hiob","Die Emmausjünger","Thomas zweifelt"], l:["Gebet","Wer ist Gott?"]},
+{k:"gefuehle-unklar", n:"Ich weiß nicht, was ich fühle", c:"seele", w:"weiß nicht was ich fühle|weiß nicht was ich fühlen soll|was soll ich fühlen|gefühle|gefühl|fühlen|gefühlschaos|durcheinander|verwirrt|taub|abgestumpft|nichts fühlen|emotionen|innerlich leer|komisch",
+ note:"Gefühle sind manchmal ein Durcheinander, und das ist menschlich. In den Psalmen bringen Menschen alles zu Gott: Wut, Trauer, Angst, Leere. Du musst nicht erst sortiert sein, um zu beten. Schütte dein Herz einfach aus. Gott kennt dich besser, als du dich selbst kennst.",
+ v:[["Psalm 62,9","Schüttet euer Herz vor ihm aus"],["Psalm 139,23–24","Erforsche mich und erkenne mein Herz"],["Römer 8,26","Der Geist hilft, wenn uns die Worte fehlen"],["Johannes 11,35","Auch Jesus hat geweint"],["Prediger 3,1–8","Alles hat seine Zeit"],["1. Petrus 5,7","Alle Sorgen auf ihn werfen"]],
+ s:["Hanna betet um ein Kind","Elia unter dem Ginster","Lazarus wird auferweckt"], l:["Gebet"]},
+{k:"mehr-fuehlen", n:"Gott mehr erleben", c:"glaube", w:"mehr fühlen|wie kann ich mehr fühlen|gott erleben|gott spüren|gott näher|näher zu gott|leidenschaft|feuer|brennen für jesus|begeisterung|lauwarm|lau|eifer|tiefer glauben|mehr glauben",
+ note:"Glaube ist mehr als ein Gefühl, aber Gott will dir begegnen. Gefühle folgen oft dem, worauf du dich ausrichtest. Was hilft: Lobpreis, Dankbarkeit, Zeit in der Bibel, Gemeinschaft mit anderen Christen und anderen dienen. Bitte Gott um seinen Heiligen Geist. Er hat versprochen: Wer mich sucht, wird mich finden.",
+ v:[["Jeremia 29,13","Wenn ihr mich von ganzem Herzen sucht"],["Jakobus 4,8","Naht euch zu Gott"],["Psalm 34,9","Schmeckt und seht, wie freundlich der Herr ist"],["Römer 12,11","Brennt im Geist"],["Psalm 16,11","Vor dir ist Freude die Fülle"],["Epheser 3,16–19","Die Liebe von Christus erkennen"]],
+ s:["Pfingsten","Die Emmausjünger","Paulus und Silas im Gefängnis","Maria und Marta"], l:["Der Heilige Geist","Gebet"]},
+{k:"durchhalten", n:"Durchhalten & dranbleiben", c:"mut", w:"durchhalten|dranbleiben|aufgeben|keine kraft mehr|müde im glauben|rückschritt|immer wieder versagen|schaffe es nicht|zu schwer",
+ note:"Glaube ist ein Lauf, kein Sprint. Paulus vergleicht ihn mit einem Wettkampf, bei dem man dranbleibt, auch wenn es schwer wird. Du musst es nicht aus eigener Kraft schaffen. Gott gibt den Müden Kraft.",
+ v:[["Galater 6,9","Lasst uns nicht müde werden"],["Hebräer 12,1–2","Mit Ausdauer laufen, auf Jesus schauen"],["Jesaja 40,29–31","Den Müden gibt er Kraft"],["Philipper 3,13–14","Ich jage nach dem Ziel"],["2. Timotheus 4,7","Ich habe den Lauf vollendet"]],
+ s:["Nehemia baut die Mauer","Petrus wird wiederhergestellt","Elia unter dem Ginster"], l:[]},
+{k:"gemeinde-langweilig", n:"Keine Lust auf Gemeinde", c:"menschen", w:"gottesdienst langweilig|gemeinde langweilig|keine lust auf gemeinde|kirche langweilig|predigt langweilig|gemeinde|gottesdienst|kirche|jugendstunde",
+ note:"Gemeinde ist keine Show, sondern eine Familie. Manchmal ist es langweilig, manchmal nervig, aber Gott hat uns zusammengestellt, damit wir einander tragen. Frag dich: Wo kann ich mitmachen, statt nur zuzuschauen?",
+ v:[["Hebräer 10,24–25","Unsere Versammlungen nicht verlassen"],["Apostelgeschichte 2,42–47","Wie die erste Gemeinde lebte"],["1. Korinther 12,12–27","Ein Leib, viele Glieder"],["Psalm 122,1","Ich freute mich, ins Haus des Herrn zu gehen"]],
+ s:["Pfingsten","Petrus wird befreit"], l:["Gemeinde, Taufe, Abendmahl"]},
+{k:"freude", n:"Freude", c:"mut", w:"freude|glücklich|fröhlich|freuen|lachen|glück|zufrieden sein",
+ note:"Freude in der Bibel ist mehr als gute Laune. Sie kommt aus der Beziehung zu Gott und bleibt auch in schweren Zeiten. Paulus schreibt über Freude sogar aus dem Gefängnis.",
+ v:[["Philipper 4,4","Freut euch im Herrn allezeit"],["Nehemia 8,10","Die Freude am Herrn ist eure Stärke"],["Psalm 16,11","Freude die Fülle"],["Johannes 15,11","Damit meine Freude in euch ist"],["Galater 5,22","Freude ist Frucht des Geistes"]],
+ s:["Paulus und Silas im Gefängnis","Der verlorene Sohn","Die Hochzeit zu Kana"], l:[]},
+{k:"bibel-wahr", n:"Ist die Bibel wahr?", c:"glaube", w:"ist die bibel wahr|bibel wahr|bibel erfunden|widersprüche|glaubwürdig|beweis|beweise|märchen|wissenschaft|evolution",
+ note:"Die Bibel ist kein Märchenbuch. Ihre Schreiber berichten von Orten, Herrschern und Ereignissen, die man historisch einordnen kann. Lukas hat nach eigener Aussage sorgfältig recherchiert, und Paulus nennt über 500 Zeugen der Auferstehung. Ehrliche Fragen sind erlaubt, Gott hält sie aus.",
+ v:[["Lukas 1,1–4","Lukas hat alles genau erkundet"],["2. Petrus 1,16","Keine ausgedachten Fabeln"],["1. Korinther 15,3–8","Über 500 Zeugen"],["2. Timotheus 3,16","Von Gott eingegeben"],["1. Petrus 3,15","Bereit zur Antwort"]],
+ s:["Paulus in Athen","Thomas zweifelt"], l:["Wie die Bibel aufgebaut ist","Auferstehung, Himmelfahrt, Wiederkunft"]},
+{k:"gottes-liebe", n:"Liebt Gott mich wirklich?", c:"glaube", w:"liebt gott mich|gottes liebe|geliebt|nicht gut genug|nicht genug für gott|gott mag mich nicht|bin ich wertvoll|gott hasst mich",
+ note:"Gottes Liebe hängt nicht an deiner Leistung. Er hat dich geliebt, bevor du irgendetwas getan hast. Am Kreuz hat Jesus gezeigt, wie viel du ihm wert bist. Nichts kann dich von dieser Liebe trennen.",
+ v:[["Römer 5,8","Christus starb für uns, als wir noch Sünder waren"],["Johannes 3,16","So sehr hat Gott die Welt geliebt"],["1. Johannes 4,9–10","Darin besteht die Liebe"],["Römer 8,38–39","Nichts kann uns von seiner Liebe trennen"],["Zefanja 3,17","Gott freut sich über dich"],["Jesaja 49,15–16","In meine Hände gezeichnet"]],
+ s:["Der verlorene Sohn","Das verlorene Schaf","Zachäus","Die Frau am Brunnen"], l:["Gnade","Das Kreuz"]},
 {k:"fasten", n:"Fasten", c:"glaube", w:"fasten|fastenzeit|verzicht|verzichten",
  note:"Fasten heißt, bewusst auf etwas zu verzichten, um Zeit und Herz für Gott freizumachen. Jesus setzt voraus, dass seine Jünger fasten, aber nicht zur Schau.",
  v:[["Matthäus 6,16–18","Fasten im Verborgenen"],["Jesaja 58,6–7","Ein Fasten, das Gott gefällt"],["Matthäus 4,1–4","Jesus fastet 40 Tage"]],
@@ -1063,22 +1099,38 @@ function lev(a, b){ if (Math.abs(a.length - b.length) > 2) return 9; const m = a
 const TOPIC_KW = TOPICS.map(t => ({t, kw:[t.n, ...t.w.split("|")].map(norm)}));
 TOPICS.forEach(t => { t.cat = TCATS.find(c => c.k === t.c); t.sid = t.s.map(n => (ST.find(x => x.t === n) || {}).id).filter(Boolean); t.lid = t.l.map(n => (L.find(x => x.t === n) || {}).id).filter(Boolean); });
 const TP = k => TOPICS.find(t => t.k === k);
-function topicHits(q){
-  q = norm(q); if (q.length < 2) return [];
-  const qw = q.split(" ");
-  return TOPIC_KW.map(({t, kw}) => {
-    let sc = 0;
-    kw.forEach(k => {
-      if (k === q) sc = Math.max(sc, 100);
-      else if (q.length >= 3 && k.startsWith(q)) sc = Math.max(sc, 85);
-      else if (k.length >= 4 && (" " + q + " ").includes(" " + k + " ")) sc = Math.max(sc, 75);
-      else if (q.length >= 4 && k.includes(q)) sc = Math.max(sc, 60);
-      else { const tol = q.length >= 8 ? 2 : q.length >= 5 ? 1 : 0; if (tol) { if (lev(q, k) <= tol) sc = Math.max(sc, 70); else qw.forEach(w => { if (w.length >= 5) k.split(" ").forEach(kk => { if (kk.length >= 5 && lev(w, kk) <= (w.length >= 8 ? 2 : 1)) sc = Math.max(sc, 55); }); }); } }
-    });
-    if (t.cat && t.cat.hidden && !(sc === 100 || sc === 75 || sc === 70 || (sc === 85 && q.length >= 7))) sc = 0;
-    return {t, sc};
-  }).filter(x => x.sc > 0).sort((a,b) => b.sc - a.sc).map(x => x.t);
+const STOP = new Set("ich du er sie es wir ihr mich mir dich dir sich mein meine meinen meinem meiner dein deine habe hab hast hat haben bin bist ist sind war waere waer wäre gerade momentan aktuell irgendwie einfach echt so sehr auch noch schon mal was wie warum wieso weshalb wann wo wer kann kannst koennte könnte soll sollte muss musst will willst moechte möchte ein eine einen einem einer der die das den dem des und oder aber denn dass zu zum zur mit von vom fuer für auf in im an am bei ueber über nicht kein keine keinen keiner man da dann wenn ob nur bitte mehr viel ganz oft immer jetzt heute weiss weiß wissen gibt geht tun mache machen".split(" ").map(w => norm(w)));
+function stamm(w){ for (const s of ["ungen","ung","heit","keit","lich","isch","ern","en","er","es","em","st","e","n","s","t"]) if (w.endsWith(s) && w.length - s.length >= 4) return w.slice(0, -s.length); return w; }
+const toks = s => norm(s).split(" ").filter(w => w.length >= 3 && !STOP.has(w)).map(stamm);
+const TIDX = TOPICS.map(t => {
+  const kw = new Map(), add = (w, g) => { if (!kw.has(w) || kw.get(w) < g) kw.set(w, g); };
+  toks(t.n).forEach(w => add(w, 4)); t.w.split("|").forEach(p => toks(p).forEach(w => add(w, 3)));
+  const low = new Map(), addl = (w, g) => { if (!kw.has(w) && (!low.has(w) || low.get(w) < g)) low.set(w, g); };
+  toks(t.note).forEach(w => addl(w, 0.6)); t.v.forEach(([r, d]) => toks(d).forEach(w => addl(w, 0.6)));
+  const phr = t.w.split("|").map(norm).filter(p => p.includes(" "));
+  return {t, kw, low, phr};
+});
+function wtreffer(q, map){ let best = 0;
+  for (const [w, g] of map) { let s = 0;
+    if (w === q) s = g; else if (q.length >= 5 && w.length >= 5 && (w.startsWith(q) || q.startsWith(w))) s = g * 0.8;
+    else if (q.length >= 6 && w.length >= 6 && lev(q, w) <= 1) s = g * 0.7;
+    if (s > best) best = s; }
+  return best; }
+function topicScores(q){
+  const nq = norm(q); if (nq.length < 2) return [];
+  const qt = [...new Set(toks(q))]; const pad = " " + nq + " ";
+  return TIDX.map(({t, kw, low, phr}) => {
+    let sc = 0, kwHit = 0;
+    // alter, exakter Treffer (für Ein-Wort-Suchen)
+    TOPIC_KW.find(x => x.t === t).kw.forEach(k => { if (k === nq) sc = Math.max(sc, 12); else if (k.length >= 4 && pad.includes(" " + k + " ")) { sc = Math.max(sc, 6 + k.split(" ").length * 2); kwHit = 1; } });
+    phr.forEach(p => { if (pad.includes(" " + p + " ")) { sc += 3 * p.split(" ").length; kwHit = 1; } });
+    qt.forEach(w => { const a = wtreffer(w, kw); if (a > 0) { sc += a; kwHit = 1; } else sc += wtreffer(w, low); });
+    if (nq.length >= 5 && !qt.length) { const k1 = TOPIC_KW.find(x => x.t === t).kw; if (k1.some(k => k.startsWith(nq))) sc = Math.max(sc, 8); }
+    if (t.cat.hidden) { const old = TOPIC_KW.find(x => x.t === t).kw.some(k => k === nq || (k.length >= 4 && pad.includes(" " + k + " ")) || (nq.length >= 7 && k.startsWith(nq)) || (nq.length >= 6 && lev(nq, k) <= 2)); if (!old) sc = 0; }
+    return {t, sc, kwHit};
+  }).filter(x => x.sc > 0).sort((a, b) => b.sc - a.sc);
 }
+function topicHits(q){ return topicScores(q).filter(x => x.sc >= 2.4 && x.kwHit).map(x => x.t); }
 const helpBox = h => { const x = HELP[h]; if (!x) return ""; return `<div class="help" role="note"><span class="lbl">${esc(x.t)}</span><p>${esc(x.p)}</p><div class="nums">${x.n.map(([n,nr]) => `<a class="numb" href="tel:${nr.replace(/\s/g,"")}"><span>${esc(n)}</span><b class="num">${esc(nr)}</b></a>`).join("")}</div><p class="f">${esc(x.f)}</p></div>`; };
 const verseList = t => `<div class="stack" style="gap:6px">${t.v.map(([r, d]) => `<a class="readlink vl" href="${refUrl(r)}" target="_blank" rel="noopener"><span class="t">${esc(r)}<small>${esc(d)}</small></span>${I.ext}</a>`).join("")}</div>`;
 function topicBody(t, full){
@@ -1107,10 +1159,18 @@ function drawSearch(){
     el.innerHTML = `<h2>Themen von A bis Z <small>${TOPICS.filter(t => !t.cat.hidden).length}</small></h2>` + TCATS.filter(c => !c.hidden).map(c => { const ts = TOPICS.filter(t => t.c === c.k).sort((a,b) => a.n.localeCompare(b.n, "de")); return ts.length ? `<div class="tcat"><div class="eyebrow" style="--c:${c.c}"><span class="dot"></span>${esc(c.n)}</div><div class="tchips">${ts.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div></div>` : ""; }).join("");
     return;
   }
-  const th = topicHits(raw);
-  const wq = " " + q;
-  const ls = L.filter(x => (" " + norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a)).includes(wq));
-  const ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq));
+  const alle = topicScores(raw);
+  let th = alle.filter(x => x.sc >= 2.4 && x.kwHit).map(x => x.t);
+  const vielleicht = th.length ? [] : alle.filter(x => !x.t.cat.hidden).slice(0, 3).map(x => x.t);
+  const wq = " " + q, qt = toks(raw);
+  const satzScore = txt => { const tw = toks(txt); return qt.filter(w => w.length >= 4 && tw.some(x => x === w || (w.length >= 5 && x.length >= 5 && (x.startsWith(w) || w.startsWith(x))))).length; };
+  const viel = qt.length >= 2;
+  let ls = L.filter(x => (" " + norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a)).includes(wq));
+  let ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq));
+  if (viel) {
+    if (!ss.length) ss = ST.map(x => [x, satzScore(x.t + " " + x.s + " " + x.k + " " + x.q)]).filter(a => a[1] >= 2).sort((a, b) => b[1] - a[1]).slice(0, 4).map(a => a[0]);
+    if (!ls.length) ls = L.map(x => [x, satzScore(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.q)]).filter(a => a[1] >= 2).sort((a, b) => b[1] - a[1]).slice(0, 3).map(a => a[0]);
+  }
   const thS = new Set(th.flatMap(t => t.sid));
   const ss2 = ss.filter(x => !thS.has(x.id));
   let h = "";
@@ -1125,7 +1185,10 @@ function drawSearch(){
     if (vu.length) h += `<h2>Bibelstellen <small>${vu.length}</small></h2><div class="stack" style="gap:6px">${vu.slice(0,12).map(([r,d,t]) => `<a class="readlink vl" href="${refUrl(r)}" target="_blank" rel="noopener"><span class="t">${esc(r)}<small>${esc(d)} · Thema: ${esc(t.n)}</small></span>${I.ext}</a>`).join("")}</div>`; }
   if (ss2.length) h += `<h2>Geschichten <small>${ss2.length}</small></h2><div class="list">${ss2.map(storyItem).join("")}</div>`;
   if (ls.length) h += `<h2>Lektionen <small>${ls.length}</small></h2><div class="list">${ls.map(x => `<a class="item" href="#lektion-${x.id}" style="--c:${B(x.b).c}"><span class="dot"></span><span class="tx"><span class="tt">${esc(x.t)}</span><span class="rf">${esc(B(x.b).n)}</span></span><span class="chev">›</span></a>`).join("")}</div>`;
-  if (!h) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.filter(t => !t.cat.hidden).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
+  if (!th.length && vielleicht.length) h = `<p class="lead" style="margin:0 0 6px">Das passt vielleicht zu dem, was dich beschäftigt:</p>` + vielleicht.map(t => `<a class="item" href="#frage-${t.k}" style="--c:${t.cat.c};margin-bottom:6px"><span class="dot"></span><span class="tx"><span class="tt">${esc(t.n)}</span><span class="rf">${esc(t.cat.n)}</span></span><span class="chev">›</span></a>`).join("") + h;
+  if (!h) { const basis = ["gott-fern","gebet","hoffnung","gefuehle-unklar"].map(TP).filter(Boolean);
+    h = `<p class="lead" style="margin:0 0 6px">Dazu habe ich nichts Genaues gefunden. Diese Themen helfen oft, wenn einen etwas beschäftigt:</p>` + basis.map(t => `<a class="item" href="#frage-${t.k}" style="--c:${t.cat.c};margin-bottom:6px"><span class="dot"></span><span class="tx"><span class="tt">${esc(t.n)}</span><span class="rf">${esc(t.cat.n)}</span></span><span class="chev">›</span></a>`).join("") + `<p style="color:var(--quiet);font-size:.88rem;margin-top:10px">Versuch es auch mit einem einzelnen Wort, zum Beispiel „Angst“, „Schuld“ oder „Petrus“. Und sprich gern mit jemandem aus deiner Gemeinde darüber.</p>`; }
+  if (false) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.filter(t => !t.cat.hidden).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
   el.innerHTML = h;
 }
 

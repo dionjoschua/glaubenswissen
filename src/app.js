@@ -263,22 +263,38 @@ function lev(a, b){ if (Math.abs(a.length - b.length) > 2) return 9; const m = a
 const TOPIC_KW = TOPICS.map(t => ({t, kw:[t.n, ...t.w.split("|")].map(norm)}));
 TOPICS.forEach(t => { t.cat = TCATS.find(c => c.k === t.c); t.sid = t.s.map(n => (ST.find(x => x.t === n) || {}).id).filter(Boolean); t.lid = t.l.map(n => (L.find(x => x.t === n) || {}).id).filter(Boolean); });
 const TP = k => TOPICS.find(t => t.k === k);
-function topicHits(q){
-  q = norm(q); if (q.length < 2) return [];
-  const qw = q.split(" ");
-  return TOPIC_KW.map(({t, kw}) => {
-    let sc = 0;
-    kw.forEach(k => {
-      if (k === q) sc = Math.max(sc, 100);
-      else if (q.length >= 3 && k.startsWith(q)) sc = Math.max(sc, 85);
-      else if (k.length >= 4 && (" " + q + " ").includes(" " + k + " ")) sc = Math.max(sc, 75);
-      else if (q.length >= 4 && k.includes(q)) sc = Math.max(sc, 60);
-      else { const tol = q.length >= 8 ? 2 : q.length >= 5 ? 1 : 0; if (tol) { if (lev(q, k) <= tol) sc = Math.max(sc, 70); else qw.forEach(w => { if (w.length >= 5) k.split(" ").forEach(kk => { if (kk.length >= 5 && lev(w, kk) <= (w.length >= 8 ? 2 : 1)) sc = Math.max(sc, 55); }); }); } }
-    });
-    if (t.cat && t.cat.hidden && !(sc === 100 || sc === 75 || sc === 70 || (sc === 85 && q.length >= 7))) sc = 0;
-    return {t, sc};
-  }).filter(x => x.sc > 0).sort((a,b) => b.sc - a.sc).map(x => x.t);
+const STOP = new Set("ich du er sie es wir ihr mich mir dich dir sich mein meine meinen meinem meiner dein deine habe hab hast hat haben bin bist ist sind war waere waer wäre gerade momentan aktuell irgendwie einfach echt so sehr auch noch schon mal was wie warum wieso weshalb wann wo wer kann kannst koennte könnte soll sollte muss musst will willst moechte möchte ein eine einen einem einer der die das den dem des und oder aber denn dass zu zum zur mit von vom fuer für auf in im an am bei ueber über nicht kein keine keinen keiner man da dann wenn ob nur bitte mehr viel ganz oft immer jetzt heute weiss weiß wissen gibt geht tun mache machen".split(" ").map(w => norm(w)));
+function stamm(w){ for (const s of ["ungen","ung","heit","keit","lich","isch","ern","en","er","es","em","st","e","n","s","t"]) if (w.endsWith(s) && w.length - s.length >= 4) return w.slice(0, -s.length); return w; }
+const toks = s => norm(s).split(" ").filter(w => w.length >= 3 && !STOP.has(w)).map(stamm);
+const TIDX = TOPICS.map(t => {
+  const kw = new Map(), add = (w, g) => { if (!kw.has(w) || kw.get(w) < g) kw.set(w, g); };
+  toks(t.n).forEach(w => add(w, 4)); t.w.split("|").forEach(p => toks(p).forEach(w => add(w, 3)));
+  const low = new Map(), addl = (w, g) => { if (!kw.has(w) && (!low.has(w) || low.get(w) < g)) low.set(w, g); };
+  toks(t.note).forEach(w => addl(w, 0.6)); t.v.forEach(([r, d]) => toks(d).forEach(w => addl(w, 0.6)));
+  const phr = t.w.split("|").map(norm).filter(p => p.includes(" "));
+  return {t, kw, low, phr};
+});
+function wtreffer(q, map){ let best = 0;
+  for (const [w, g] of map) { let s = 0;
+    if (w === q) s = g; else if (q.length >= 5 && w.length >= 5 && (w.startsWith(q) || q.startsWith(w))) s = g * 0.8;
+    else if (q.length >= 6 && w.length >= 6 && lev(q, w) <= 1) s = g * 0.7;
+    if (s > best) best = s; }
+  return best; }
+function topicScores(q){
+  const nq = norm(q); if (nq.length < 2) return [];
+  const qt = [...new Set(toks(q))]; const pad = " " + nq + " ";
+  return TIDX.map(({t, kw, low, phr}) => {
+    let sc = 0, kwHit = 0;
+    // alter, exakter Treffer (für Ein-Wort-Suchen)
+    TOPIC_KW.find(x => x.t === t).kw.forEach(k => { if (k === nq) sc = Math.max(sc, 12); else if (k.length >= 4 && pad.includes(" " + k + " ")) { sc = Math.max(sc, 6 + k.split(" ").length * 2); kwHit = 1; } });
+    phr.forEach(p => { if (pad.includes(" " + p + " ")) { sc += 3 * p.split(" ").length; kwHit = 1; } });
+    qt.forEach(w => { const a = wtreffer(w, kw); if (a > 0) { sc += a; kwHit = 1; } else sc += wtreffer(w, low); });
+    if (nq.length >= 5 && !qt.length) { const k1 = TOPIC_KW.find(x => x.t === t).kw; if (k1.some(k => k.startsWith(nq))) sc = Math.max(sc, 8); }
+    if (t.cat.hidden) { const old = TOPIC_KW.find(x => x.t === t).kw.some(k => k === nq || (k.length >= 4 && pad.includes(" " + k + " ")) || (nq.length >= 7 && k.startsWith(nq)) || (nq.length >= 6 && lev(nq, k) <= 2)); if (!old) sc = 0; }
+    return {t, sc, kwHit};
+  }).filter(x => x.sc > 0).sort((a, b) => b.sc - a.sc);
 }
+function topicHits(q){ return topicScores(q).filter(x => x.sc >= 2.4 && x.kwHit).map(x => x.t); }
 const helpBox = h => { const x = HELP[h]; if (!x) return ""; return `<div class="help" role="note"><span class="lbl">${esc(x.t)}</span><p>${esc(x.p)}</p><div class="nums">${x.n.map(([n,nr]) => `<a class="numb" href="tel:${nr.replace(/\s/g,"")}"><span>${esc(n)}</span><b class="num">${esc(nr)}</b></a>`).join("")}</div><p class="f">${esc(x.f)}</p></div>`; };
 const verseList = t => `<div class="stack" style="gap:6px">${t.v.map(([r, d]) => `<a class="readlink vl" href="${refUrl(r)}" target="_blank" rel="noopener"><span class="t">${esc(r)}<small>${esc(d)}</small></span>${I.ext}</a>`).join("")}</div>`;
 function topicBody(t, full){
@@ -307,10 +323,18 @@ function drawSearch(){
     el.innerHTML = `<h2>Themen von A bis Z <small>${TOPICS.filter(t => !t.cat.hidden).length}</small></h2>` + TCATS.filter(c => !c.hidden).map(c => { const ts = TOPICS.filter(t => t.c === c.k).sort((a,b) => a.n.localeCompare(b.n, "de")); return ts.length ? `<div class="tcat"><div class="eyebrow" style="--c:${c.c}"><span class="dot"></span>${esc(c.n)}</div><div class="tchips">${ts.map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div></div>` : ""; }).join("");
     return;
   }
-  const th = topicHits(raw);
-  const wq = " " + q;
-  const ls = L.filter(x => (" " + norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a)).includes(wq));
-  const ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq));
+  const alle = topicScores(raw);
+  let th = alle.filter(x => x.sc >= 2.4 && x.kwHit).map(x => x.t);
+  const vielleicht = th.length ? [] : alle.filter(x => !x.t.cat.hidden).slice(0, 3).map(x => x.t);
+  const wq = " " + q, qt = toks(raw);
+  const satzScore = txt => { const tw = toks(txt); return qt.filter(w => w.length >= 4 && tw.some(x => x === w || (w.length >= 5 && x.length >= 5 && (x.startsWith(w) || w.startsWith(x))))).length; };
+  const viel = qt.length >= 2;
+  let ls = L.filter(x => (" " + norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a)).includes(wq));
+  let ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq));
+  if (viel) {
+    if (!ss.length) ss = ST.map(x => [x, satzScore(x.t + " " + x.s + " " + x.k + " " + x.q)]).filter(a => a[1] >= 2).sort((a, b) => b[1] - a[1]).slice(0, 4).map(a => a[0]);
+    if (!ls.length) ls = L.map(x => [x, satzScore(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.q)]).filter(a => a[1] >= 2).sort((a, b) => b[1] - a[1]).slice(0, 3).map(a => a[0]);
+  }
   const thS = new Set(th.flatMap(t => t.sid));
   const ss2 = ss.filter(x => !thS.has(x.id));
   let h = "";
@@ -325,7 +349,10 @@ function drawSearch(){
     if (vu.length) h += `<h2>Bibelstellen <small>${vu.length}</small></h2><div class="stack" style="gap:6px">${vu.slice(0,12).map(([r,d,t]) => `<a class="readlink vl" href="${refUrl(r)}" target="_blank" rel="noopener"><span class="t">${esc(r)}<small>${esc(d)} · Thema: ${esc(t.n)}</small></span>${I.ext}</a>`).join("")}</div>`; }
   if (ss2.length) h += `<h2>Geschichten <small>${ss2.length}</small></h2><div class="list">${ss2.map(storyItem).join("")}</div>`;
   if (ls.length) h += `<h2>Lektionen <small>${ls.length}</small></h2><div class="list">${ls.map(x => `<a class="item" href="#lektion-${x.id}" style="--c:${B(x.b).c}"><span class="dot"></span><span class="tx"><span class="tt">${esc(x.t)}</span><span class="rf">${esc(B(x.b).n)}</span></span><span class="chev">›</span></a>`).join("")}</div>`;
-  if (!h) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.filter(t => !t.cat.hidden).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
+  if (!th.length && vielleicht.length) h = `<p class="lead" style="margin:0 0 6px">Das passt vielleicht zu dem, was dich beschäftigt:</p>` + vielleicht.map(t => `<a class="item" href="#frage-${t.k}" style="--c:${t.cat.c};margin-bottom:6px"><span class="dot"></span><span class="tx"><span class="tt">${esc(t.n)}</span><span class="rf">${esc(t.cat.n)}</span></span><span class="chev">›</span></a>`).join("") + h;
+  if (!h) { const basis = ["gott-fern","gebet","hoffnung","gefuehle-unklar"].map(TP).filter(Boolean);
+    h = `<p class="lead" style="margin:0 0 6px">Dazu habe ich nichts Genaues gefunden. Diese Themen helfen oft, wenn einen etwas beschäftigt:</p>` + basis.map(t => `<a class="item" href="#frage-${t.k}" style="--c:${t.cat.c};margin-bottom:6px"><span class="dot"></span><span class="tx"><span class="tt">${esc(t.n)}</span><span class="rf">${esc(t.cat.n)}</span></span><span class="chev">›</span></a>`).join("") + `<p style="color:var(--quiet);font-size:.88rem;margin-top:10px">Versuch es auch mit einem einzelnen Wort, zum Beispiel „Angst“, „Schuld“ oder „Petrus“. Und sprich gern mit jemandem aus deiner Gemeinde darüber.</p>`; }
+  if (false) h = `<p class="empty">Zu „${esc(raw)}“ habe ich nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Angst“, „Schuld“ oder einen Namen wie „Petrus“. Unten findest du alle Themen.</p>` + `<div class="tchips" style="margin-top:10px">${TOPICS.filter(t => !t.cat.hidden).map(t => `<a class="chip" href="#frage-${t.k}">${esc(t.n)}</a>`).join("")}</div>`;
   el.innerHTML = h;
 }
 
