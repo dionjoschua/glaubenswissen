@@ -188,7 +188,7 @@ function pGeschichten(){
   <div class="chips" role="group" aria-label="Nach Gruppe filtern"><button class="chip ${FG===""?"on":""}" data-g="" aria-pressed="${FG===""}">Alle</button>${GROUPS.map(g => `<button class="chip ${FG===g.k?"on":""}" data-g="${g.k}" aria-pressed="${FG===g.k}" style="--c:${g.c}"><span class="dot"></span>${esc(g.n)}</button>`).join("")}</div>
   <div id="slist"></div>`;
 }
-const storyItem = x => `<a class="item" href="#geschichte-${x.id}" style="--c:${GG(x.g).c}"><span class="dot"></span><span class="tx"><span class="tt">${esc(x.t)}</span><span class="rf">${esc(x.r)}${S.notes[x.id] ? " · 📝" : ""}${S.drafts[x.id] ? " · 🎤" : ""}</span></span>${S.read[x.id] ? '<span class="ck" aria-label="gelesen">✓</span>' : '<span class="chev">›</span>'}</a>`;
+const storyItem = (x, why) => `<a class="item" href="#geschichte-${x.id}" style="--c:${GG(x.g).c}"><span class="dot"></span><span class="tx"><span class="tt">${esc(x.t)}</span><span class="rf">${esc(x.r)}${S.notes[x.id] ? " · 📝" : ""}${S.drafts[x.id] ? " · 🎤" : ""}</span>${why ? `<span class="why">${esc(why)}</span>` : ""}</span>${S.read[x.id] ? '<span class="ck" aria-label="gelesen">✓</span>' : '<span class="chev">›</span>'}</a>`;
 function drawStories(){
   const el = document.getElementById("slist"); if (!el) return;
   const q = FQ.trim().toLowerCase();
@@ -261,7 +261,7 @@ const norm = s => String(s).toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe"
 function lev(a, b){ if (Math.abs(a.length - b.length) > 2) return 9; const m = a.length, n = b.length; let prev = Array.from({length:n+1}, (_,j) => j);
   for (let i = 1; i <= m; i++) { const cur = [i]; for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j-1] + 1, prev[j-1] + (a[i-1] === b[j-1] ? 0 : 1)); prev = cur; } return prev[n]; }
 const TOPIC_KW = TOPICS.map(t => ({t, kw:[t.n, ...t.w.split("|")].map(norm)}));
-TOPICS.forEach(t => { t.cat = TCATS.find(c => c.k === t.c); t.sid = t.s.map(n => (ST.find(x => x.t === n) || {}).id).filter(Boolean); t.lid = t.l.map(n => (L.find(x => x.t === n) || {}).id).filter(Boolean); });
+TOPICS.forEach(t => { t.cat = TCATS.find(c => c.k === t.c); t.why = {}; t.sid = t.s.map(e => { const [n, w] = Array.isArray(e) ? e : [e, ""]; const id = (ST.find(x => x.t === n) || {}).id; if (id && w) t.why[id] = w; return id; }).filter(Boolean); t.lid = t.l.map(n => (L.find(x => x.t === n) || {}).id).filter(Boolean); });
 const TP = k => TOPICS.find(t => t.k === k);
 const STOP = new Set("ich du er sie es wir ihr mich mir dich dir sich mein meine meinen meinem meiner dein deine habe hab hast hat haben bin bist ist sind war waere waer wäre gerade momentan aktuell irgendwie einfach echt so sehr auch noch schon mal was wie warum wieso weshalb wann wo wer kann kannst koennte könnte soll sollte muss musst will willst moechte möchte ein eine einen einem einer der die das den dem des und oder aber denn dass zu zum zur mit von vom fuer für auf in im an am bei ueber über nicht kein keine keinen keiner man da dann wenn ob nur bitte mehr viel ganz oft immer jetzt heute weiss weiß wissen gibt geht tun mache machen".split(" ").map(w => norm(w)));
 function stamm(w){ for (const s of ["ungen","ung","heit","keit","lich","isch","ern","en","er","es","em","st","e","n","s","t"]) if (w.endsWith(s) && w.length - s.length >= 4) return w.slice(0, -s.length); return w; }
@@ -280,8 +280,15 @@ function wtreffer(q, map){ let best = 0;
     else if (q.length >= 6 && w.length >= 6 && lev(q, w) <= 1) s = g * 0.7;
     if (s > best) best = s; }
   return best; }
+// "Lust" kann Motivation oder sexuelles Verlangen meinen
+function lustFix(q){ let n = norm(q); if (!/\blust\b/.test(n)) return n;
+  const sexuell = /\b(sexuell\w*|sex|begierde\w*|begehren|porno\w*|geil\w*|erreg\w*|fleischlich\w*|luestern\w*|trieb\w*|selbstbefriedigung)\b/.test(n)
+    || /\b(mit der lust|die lust ist|gegen die lust|kampf mit der lust|meine lust|der lust nachgeben|lust besiegen|lust ueberwinden|lust bekaempfen|lust kontrollieren|von der lust|boese lust|lust in mir)\b/.test(n);
+  if (!sexuell) return n;
+  return n.replace(/\b(sexuell\w*|fleischlich\w*|boese) lust\b/g, "$1 sexlust").replace(/(^| )(keine|kein|null|nie|wenig|ohne|mehr|richtig) lust\b/g, "$1$2 lust_m").replace(/\blust (zum|zur|auf|aufs|am|zu lesen|zu beten|zu gott|zur bibel)\b/g, "lust_m $1").replace(/\blust\b(?!_)/g, "sexlust").replace(/lust_m/g, "lust");
+}
 function topicScores(q){
-  const nq = norm(q); if (nq.length < 2) return [];
+  q = lustFix(q); const nq = norm(q); if (nq.length < 2) return [];
   const qt = [...new Set(toks(q))]; const pad = " " + nq + " ";
   return TIDX.map(({t, kw, low, phr}) => {
     let sc = 0, kwHit = 0;
@@ -301,7 +308,7 @@ function topicBody(t, full){
   return `${t.help && HELP[t.help] && (t.help === "krise" || t.help === "missbrauch") ? helpBox(t.help) : ""}
   <div class="merk"><span class="lbl">Was die Bibel dazu sagt</span><p style="font-family:var(--f-body);font-size:1rem;line-height:1.55">${esc(t.note)}</p></div>
   <div><span class="lbl r">Bibelstellen · Hoffnung für alle</span>${verseList(full ? t : Object.assign({}, t, {v:t.v.slice(0,4)}))}</div>
-  ${t.sid.length ? `<div><span class="lbl q">Passende Geschichten</span><div class="list">${t.sid.map(id => storyItem(SS(id))).join("")}</div></div>` : ""}
+  ${t.sid.length ? `<div><span class="lbl q">Passende Geschichten</span><div class="list">${t.sid.map(id => storyItem(SS(id), t.why[id])).join("")}</div></div>` : ""}
   ${full && t.lid.length ? `<div><span class="lbl q">Passende Lektionen</span><div class="list">${t.lid.map(id => { const x = LS(id); return `<a class="item" href="#lektion-${id}" style="--c:${B(x.b).c}"><span class="dot"></span><span class="tx"><span class="tt">${esc(x.t)}</span><span class="rf">${esc(B(x.b).n)}</span></span><span class="chev">›</span></a>`; }).join("")}</div></div>` : ""}
   ${t.help && !(t.help === "krise" || t.help === "missbrauch") ? helpBox(t.help) : ""}`;
 }
