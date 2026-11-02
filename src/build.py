@@ -15,7 +15,9 @@ ff = "".join(f"@font-face{{font-family:'{n}';font-style:normal;font-weight:{w};f
 css = open(D+'style.css', encoding='utf-8').read()
 body = open(D+'body.html', encoding='utf-8').read()
 js = open(D+'data.js', encoding='utf-8').read() + "\n" + open(D+'topics.js', encoding='utf-8').read() + "\n" + open(D+'app.js', encoding='utf-8').read()
-desc = "Glaubenswissen: Lektionen über Jesus, die Bibel und das Evangelium, 137 Bibelgeschichten zum Lesen und Forschen und ein Baukasten für Predigt-Einleitungen."
+import re as _re
+NST = len(_re.findall(r'^\["(?:ur|vae|mose|koen|proph|jes|wun|gl|beg|pass|apg)",', open(D+'data.js', encoding='utf-8').read(), _re.M))
+desc = f"Glaubenswissen: Lektionen über Jesus, die Bibel und das Evangelium, {NST} Bibelgeschichten zum Lesen und Forschen und ein Baukasten für Predigt-Einleitungen."
 sw_reg = "\nif ('serviceWorker' in navigator && location.protocol === 'https:') { let reloaded = false; navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloaded) return; reloaded = true; location.reload(); }); window.addEventListener('load', () => navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).then(r => r.update()).catch(() => {})); }\n"
 
 site = f'''<!DOCTYPE html>

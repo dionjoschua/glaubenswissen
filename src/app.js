@@ -263,7 +263,7 @@ function lev(a, b){ if (Math.abs(a.length - b.length) > 2) return 9; const m = a
 const TOPIC_KW = TOPICS.map(t => ({t, kw:[t.n, ...t.w.split("|")].map(norm)}));
 TOPICS.forEach(t => { t.cat = TCATS.find(c => c.k === t.c); t.why = {}; t.sid = t.s.map(e => { const [n, w] = Array.isArray(e) ? e : [e, ""]; const id = (ST.find(x => x.t === n) || {}).id; if (id && w) t.why[id] = w; return id; }).filter(Boolean); t.lid = t.l.map(n => (L.find(x => x.t === n) || {}).id).filter(Boolean); });
 const TP = k => TOPICS.find(t => t.k === k);
-const STOP = new Set("ich du er sie es wir ihr mich mir dich dir sich mein meine meinen meinem meiner dein deine habe hab hast hat haben bin bist ist sind war waere waer wäre gerade momentan aktuell irgendwie einfach echt so sehr auch noch schon mal was wie warum wieso weshalb wann wo wer kann kannst koennte könnte soll sollte muss musst will willst moechte möchte ein eine einen einem einer der die das den dem des und oder aber denn dass zu zum zur mit von vom fuer für auf in im an am bei ueber über nicht kein keine keinen keiner man da dann wenn ob nur bitte mehr viel ganz oft immer jetzt heute weiss weiß wissen gibt geht tun mache machen".split(" ").map(w => norm(w)));
+const STOP = new Set("bedeutet bedeutung heisst heißt meint ich du er sie es wir ihr mich mir dich dir sich mein meine meinen meinem meiner dein deine habe hab hast hat haben bin bist ist sind war waere waer wäre gerade momentan aktuell irgendwie einfach echt so sehr auch noch schon mal was wie warum wieso weshalb wann wo wer kann kannst koennte könnte soll sollte muss musst will willst moechte möchte ein eine einen einem einer der die das den dem des und oder aber denn dass zu zum zur mit von vom fuer für auf in im an am bei ueber über nicht kein keine keinen keiner man da dann wenn ob nur bitte mehr viel ganz oft immer jetzt heute weiss weiß wissen gibt geht tun mache machen".split(" ").map(w => norm(w)));
 function stamm(w){ for (const s of ["ungen","ung","heit","keit","lich","isch","ern","en","er","es","em","st","e","n","s","t"]) if (w.endsWith(s) && w.length - s.length >= 4) return w.slice(0, -s.length); return w; }
 const toks = s => norm(s).split(" ").filter(w => w.length >= 3 && !STOP.has(w)).map(stamm);
 const TIDX = TOPICS.map(t => {
@@ -333,11 +333,12 @@ function drawSearch(){
   const alle = topicScores(raw);
   let th = alle.filter(x => x.sc >= 2.4 && x.kwHit).map(x => x.t);
   const vielleicht = th.length ? [] : alle.filter(x => !x.t.cat.hidden).slice(0, 3).map(x => x.t);
-  const wq = " " + q, qt = toks(raw);
+  const qt = toks(raw), wq = " " + (qt.length === 1 && q.includes(" ") && !/\d/.test(q) ? qt[0] : q);
   const satzScore = txt => { const tw = toks(txt); return qt.filter(w => w.length >= 4 && tw.some(x => x === w || (w.length >= 5 && x.length >= 5 && (x.startsWith(w) || w.startsWith(x))))).length; };
   const viel = qt.length >= 2;
   let ls = L.filter(x => (" " + norm(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.r.join(" ") + " " + x.q + " " + x.a)).includes(wq));
-  let ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq));
+  const rang = x => (" " + norm(x.t)).includes(wq) ? 3 : (" " + norm(x.s + " " + x.k + " " + x.q).replace(/\b[1-5] mose\b/g, "")).includes(wq) ? 2 : 1;
+  let ss = ST.filter(x => (" " + norm(x.t + " " + x.r + " " + x.s + " " + x.k + " " + x.q)).includes(wq)).map(x => [x, rang(x)]).sort((p1, p2) => p2[1] - p1[1]).map(p1 => p1[0]);
   if (viel) {
     if (!ss.length) ss = ST.map(x => [x, satzScore(x.t + " " + x.s + " " + x.k + " " + x.q)]).filter(a => a[1] >= 2).sort((a, b) => b[1] - a[1]).slice(0, 4).map(a => a[0]);
     if (!ls.length) ls = L.map(x => [x, satzScore(x.t + " " + x.m + " " + strip(x.p.join(" ")) + " " + x.q)]).filter(a => a[1] >= 2).sort((a, b) => b[1] - a[1]).slice(0, 3).map(a => a[0]);
@@ -473,7 +474,7 @@ function bind(r, base, arg){
     $("aMinus").onclick = () => zoom(-.1); $("aPlus").onclick = () => zoom(.1);
     tick(); if (T.run) tInt = setInterval(tick, 250);
   }
-  if (r === "suche") { let st; $("sq").oninput = e => { SQ = e.target.value; clearTimeout(st); st = setTimeout(drawSearch, 120); }; $("sq").onkeydown = e => { if (e.key === "Enter") e.target.blur(); }; drawSearch(); if (!SQ) setTimeout(() => $("sq").focus(), 50); }
+  if (r === "suche") { let st; $("sq").oninput = e => { SQ = e.target.value; clearTimeout(st); st = setTimeout(drawSearch, 120); }; $("sq").onkeydown = e => { if (e.key === "Enter") e.target.blur(); }; drawSearch(); if (!SQ) setTimeout(() => { const el = $("sq"); if (el) el.focus(); }, 50); }
   if (r === "start" && $("qs")) $("qs").onsubmit = e => { e.preventDefault(); SQ = $("qsi").value; go("suche"); };
   if (base === "frage" && $("shareT")) { const t = TP(arg); $("shareT").onclick = () => share(t.n + ": Was die Bibel dazu sagt", t.note, "frage-" + t.k); }
   if (r === "einstellungen") {
